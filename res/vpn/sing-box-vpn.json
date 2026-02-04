@@ -12,9 +12,7 @@
             },
             {
                 "tag": "dns-direct",
-                "type": "%DNS_TYPE%",
-                //%DNS_SERVER_FIELDS%
-                "detour": "direct"
+                "type": "%DNS_TYPE%"//%DNS_SERVER_FIELDS%
             },
             {
                 "type": "fakeip",

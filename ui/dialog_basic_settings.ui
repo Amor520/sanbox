@@ -731,6 +731,153 @@
        </item>
       </layout>
      </widget>
+     <widget class="QWidget" name="tab_sync">
+      <attribute name="title">
+       <string>Sync</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_sync">
+       <item>
+        <widget class="QLabel" name="sync_hint">
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+         <property name="text">
+          <string>Only sync small config snapshots (profiles/groups/routes). Data will be compressed and end-to-end encrypted before upload.</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox_sync_webdav">
+         <property name="title">
+          <string>WebDAV</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_sync_webdav">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_sync_url">
+            <property name="text">
+             <string>URL</string>
+            </property>
+            <property name="toolTip">
+             <string>If URL ends with '/', it will be treated as a directory and use a default filename.</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="MyLineEdit" name="sync_webdav_url"/>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_sync_user">
+            <property name="text">
+             <string>Username</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLineEdit" name="sync_webdav_username"/>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_sync_pass">
+            <property name="text">
+             <string>Password</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLineEdit" name="sync_webdav_password">
+            <property name="echoMode">
+             <enum>QLineEdit::Password</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="label_sync_crypto">
+            <property name="text">
+             <string>Sync Password</string>
+            </property>
+            <property name="toolTip">
+             <string>Used for local encryption (Argon2id + AES-GCM). Cloud only stores ciphertext.</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QLineEdit" name="sync_password">
+            <property name="echoMode">
+             <enum>QLineEdit::Password</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0" colspan="2">
+           <widget class="QCheckBox" name="sync_auto_on_sub_update">
+            <property name="text">
+             <string>Auto sync after subscription update</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox_sync_actions">
+         <property name="title">
+          <string>Actions</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_sync_actions">
+          <item row="0" column="0">
+           <widget class="QPushButton" name="sync_test">
+            <property name="text">
+             <string>Test</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QPushButton" name="sync_push">
+            <property name="text">
+             <string>Upload</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <widget class="QPushButton" name="sync_pull">
+            <property name="text">
+             <string>Download</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="3">
+           <widget class="QPushButton" name="sync_pull_backup">
+            <property name="text">
+             <string>Download as Backup</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0" colspan="4">
+           <widget class="QLabel" name="sync_status">
+            <property name="text">
+             <string notr="true"/>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_sync">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </item>
   </layout>

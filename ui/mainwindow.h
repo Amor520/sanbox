@@ -27,6 +27,8 @@ namespace NekoGui_sys {
     class CoreProcess;
 }
 
+class QLabel;
+
 QT_BEGIN_NAMESPACE
 namespace Ui {
     class MainWindow;
@@ -135,6 +137,8 @@ private slots:
 
     void on_tabWidget_currentChanged(int index);
 
+    void on_toolButton_cloud_clicked();
+
 private:
     Ui::MainWindow *ui;
     QSystemTrayIcon *tray;
@@ -161,9 +165,13 @@ private:
     QSemaphore sem_stopped;
     int exit_reason = 0;
 
+    QLabel *label_group_subinfo = nullptr;
+
     QList<std::shared_ptr<NekoGui::ProxyEntity>> get_now_selected_list();
 
     QList<std::shared_ptr<NekoGui::ProxyEntity>> get_selected_or_group();
+
+    void refresh_group_subinfo();
 
     void dialog_message_impl(const QString &sender, const QString &info);
 

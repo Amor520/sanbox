@@ -13,7 +13,7 @@ namespace NekoGui_traffic {
         long long downlink_rate = 0;
         long long uplink_rate = 0;
 
-        long long last_update;
+        long long last_update = 0;
 
         explicit TrafficData(std::string tag) {
             this->tag = std::move(tag);
@@ -26,6 +26,7 @@ namespace NekoGui_traffic {
             uplink = 0;
             downlink_rate = 0;
             uplink_rate = 0;
+            last_update = 0;
         }
 
         [[nodiscard]] QString DisplaySpeed() const {

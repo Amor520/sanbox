@@ -5,4 +5,5 @@
 *.dat
 /cmd/nekoray_core/nekoray_core
 /cmd/nekobox_core/nekobox_core
+/cmd/nekobox_sync/nekobox_sync
 *.db

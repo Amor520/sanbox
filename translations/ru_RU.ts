@@ -219,6 +219,131 @@
         <source>Mixed (SOCKS+HTTP) Listen Port</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Sync</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Only sync small config snapshots (profiles/groups/routes). Data will be compressed and end-to-end encrypted before upload.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>WebDAV</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>URL</source>
+        <translation type="unfinished">URL</translation>
+    </message>
+    <message>
+        <source>If URL ends with &apos;/&apos;, it will be treated as a directory and use a default filename.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sync Password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Used for local encryption (Argon2id + AES-GCM). Cloud only stores ciphertext.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Auto sync after subscription update</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Actions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Test</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Upload</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Download</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Download as Backup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Used for local encryption</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>never</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Last sync: %1
+Last local hash: %2
+Last remote ETag: %3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sync tool not found: %1
+Please build it first (libs/build_go.sh).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sync process error: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sync output parse failed.
+exit=%1
+stderr=%2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sync conflict</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cloud and local both changed.
+%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Local overwrite cloud</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cloud overwrite local</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import cloud as backup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sync failed.
+%1
+%2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Downloaded to:
+%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sync applied. Restart program to reload configs now?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sync: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>done</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>DialogEditGroup</name>
@@ -669,6 +794,60 @@ For more information, see the document &quot;Configuration/DNS&quot;.</source>
         <source>Final DNS Out</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Tip: autocomplete data not found (%1). You can still type rules manually.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Autocomplete ready: geosite %1, geoip %2.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Direct D/IP %1/%2  |  Proxy D/IP %3/%4  |  Block D/IP %5/%6</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Normalize</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear all simple route rules?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Help</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>One rule per line.
+
+Domain rules:
+  geosite:cn
+  domain:example.com
+  full:example.com
+  keyword:google
+  regexp:.*
+
+IP rules:
+  geoip:cn
+  geoip:private
+  1.1.1.0/24
+
+Lines starting with # are treated as comments.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rule Help</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User 1</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>DialogVPNSettings</name>
@@ -1086,14 +1265,6 @@ https://matsuridayo.github.io/n-configuration/#vpn-tun</translation>
         <translation>Сервер</translation>
     </message>
     <message>
-        <source>Ads</source>
-        <translation>Реклама</translation>
-    </message>
-    <message>
-        <source>Document</source>
-        <translation>Документация</translation>
-    </message>
-    <message>
         <source>Update</source>
         <translation>Обновление</translation>
     </message>
@@ -1500,6 +1671,35 @@ End: %2</source>
     </message>
     <message>
         <source>URL Test</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cloud</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>版本信息</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>未知</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>简介：内置 sing-box 内核，支持订阅管理、路由分流、测速与 WebDAV 同步。</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>内核：%1
+客户端：%2
+
+%3
+
+&lt;a href=&quot;%4&quot;&gt;sing-box 发布页&lt;/a&gt;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

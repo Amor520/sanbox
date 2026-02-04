@@ -14,6 +14,8 @@ namespace NekoGui {
 
     QString FindNekoBoxCoreRealPath();
 
+    QString FindNekoBoxSyncRealPath();
+
     bool IsAdmin();
 } // namespace NekoGui
 

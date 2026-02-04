@@ -506,17 +506,17 @@ namespace NekoGui {
             }
             if (isIP) {
                 if (ip_cidr.isEmpty() && geoip.isEmpty()) return rule;
-                rule["ip_cidr"] = ip_cidr;
-                rule["geoip"] = geoip;
+                if (!ip_cidr.isEmpty()) rule["ip_cidr"] = ip_cidr;
+                if (!geoip.isEmpty()) rule["geoip"] = geoip;
             } else {
                 if (domain_keyword.isEmpty() && domain_subdomain.isEmpty() && domain_regexp.isEmpty() && domain_full.isEmpty() && geosite.isEmpty()) {
                     return rule;
                 }
-                rule["domain"] = domain_full;
-                rule["domain_suffix"] = domain_subdomain; // v2ray Subdomain => sing-box suffix
-                rule["domain_keyword"] = domain_keyword;
-                rule["domain_regex"] = domain_regexp;
-                rule["geosite"] = geosite;
+                if (!domain_full.isEmpty()) rule["domain"] = domain_full;
+                if (!domain_subdomain.isEmpty()) rule["domain_suffix"] = domain_subdomain; // v2ray Subdomain => sing-box suffix
+                if (!domain_keyword.isEmpty()) rule["domain_keyword"] = domain_keyword;
+                if (!domain_regexp.isEmpty()) rule["domain_regex"] = domain_regexp;
+                if (!geosite.isEmpty()) rule["geosite"] = geosite;
             }
             return rule;
         };
@@ -573,17 +573,15 @@ namespace NekoGui {
             dnsServers += make_dns_server("dns-remote", dataStore->routing->remote_dns, tagProxy, "dns-local");
 
         // Direct
-        auto directObj = make_dns_server("dns-direct", dataStore->routing->direct_dns, "direct", "dns-local");
+        // Do not set detour to an empty direct outbound ("direct"), sing-box will reject it.
+        // When detour is omitted, it uses the default direct dialer.
+        auto directObj = make_dns_server("dns-direct", dataStore->routing->direct_dns, "", "dns-local");
         if (dataStore->routing->dns_final_out == "bypass") {
             dnsServers.prepend(directObj);
         } else {
             dnsServers.append(directObj);
         }
-        dnsRules.append(QJsonObject{
-            {"outbound", "any"},
-            {"server", "dns-direct"},
-            {"strategy", dataStore->routing->direct_dns_strategy},
-        });
+        // Default DNS server will be set via dns.final (instead of deprecated DNS rule "outbound").
 
         // FakeIP DNS server
         if (dataStore->fake_dns && dataStore->vpn_internal_tun && dataStore->spmode_vpn && !status->forTest) {
@@ -596,7 +594,8 @@ namespace NekoGui {
         }
 
         // Underlying 100% working DNS
-        dnsServers += make_dns_server("dns-local", BOX_UNDERLYING_DNS, "direct", "");
+        // Underlying DNS should always work; detour is omitted intentionally.
+        dnsServers += make_dns_server("dns-local", BOX_UNDERLYING_DNS, "", "");
 
         // sing-box dns rule object
         auto add_rule_dns = [&](const QStringList &list, const QString &server, const QString &strategy) {
@@ -632,6 +631,23 @@ namespace NekoGui {
         dns["servers"] = dnsServers;
         dns["rules"] = dnsRules;
         dns["independent_cache"] = true;
+        // Default DNS server & strategy
+        if (!dataStore->routing->use_dns_object) {
+            const auto finalOut = dataStore->routing->dns_final_out;
+            if (finalOut == "bypass") {
+                dns["final"] = "dns-direct";
+                if (!dataStore->routing->direct_dns_strategy.isEmpty()) {
+                    dns["strategy"] = dataStore->routing->direct_dns_strategy;
+                }
+            } else { // proxy (default)
+                // Speedtest configs (forTest) do not include dns-remote by design.
+                dns["final"] = status->forTest ? "dns-direct" : "dns-remote";
+                const auto strategy = status->forTest ? dataStore->routing->direct_dns_strategy : dataStore->routing->remote_dns_strategy;
+                if (!strategy.isEmpty()) {
+                    dns["strategy"] = strategy;
+                }
+            }
+        }
 
         if (dataStore->routing->use_dns_object) {
             dns = QString2QJsonObject(dataStore->routing->dns_object);
@@ -707,33 +723,37 @@ namespace NekoGui {
             }
         }
 
-        // geopath
-        auto geoip = FindCoreAsset("geoip.db");
-        auto geosite = FindCoreAsset("geosite.db");
-        if (geoip.isEmpty()) status->result->error = +"geoip.db not found";
-        if (geosite.isEmpty()) status->result->error = +"geosite.db not found";
-
         // final add routing rule
         auto routingRules = QString2QJsonObject(dataStore->routing->custom)["rules"].toArray();
         if (status->forTest) routingRules = {};
         if (!status->forTest) QJSONARRAY_ADD(routingRules, QString2QJsonObject(dataStore->custom_route_global)["rules"].toArray())
         QJSONARRAY_ADD(routingRules, status->routingRules)
+
+        // Only require geo databases when rules actually use geoip/geosite.
+        bool need_geoip = false;
+        bool need_geosite = false;
+        for (const auto &it: routingRules) {
+            const auto obj = it.toObject();
+            if (obj.contains("geoip")) need_geoip = true;
+            if (obj.contains("geosite")) need_geosite = true;
+            if (need_geoip && need_geosite) break;
+        }
+
         auto routeObj = QJsonObject{
             {"rules", routingRules},
             {"auto_detect_interface", dataStore->spmode_vpn}, // TODO force enable?
             {"default_domain_resolver", "dns-direct"},
-            {
-                "geoip",
-                QJsonObject{
-                    {"path", geoip},
-                },
-            },
-            {
-                "geosite",
-                QJsonObject{
-                    {"path", geosite},
-                },
-            }};
+        };
+        if (need_geoip) {
+            const auto geoip = FindCoreAsset("geoip.db");
+            if (geoip.isEmpty()) status->result->error = +"geoip.db not found";
+            routeObj["geoip"] = QJsonObject{{"path", geoip}};
+        }
+        if (need_geosite) {
+            const auto geosite = FindCoreAsset("geosite.db");
+            if (geosite.isEmpty()) status->result->error = +"geosite.db not found";
+            routeObj["geosite"] = QJsonObject{{"path", geosite}};
+        }
         if (!status->forTest) routeObj["final"] = dataStore->routing->def_outbound;
         if (status->forExport) {
             routeObj.remove("geoip");
@@ -805,9 +825,12 @@ namespace NekoGui {
                     port = p;
                 }
             }
-            dnsServerFields = QStringLiteral(R"("server": "%1",)").arg(host);
+            // Inline JSON snippet, no trailing comma (template appends it after "type").
+            dnsServerFields = QStringLiteral(R"(,
+                "server": "%1")").arg(host);
             if (port > 0 && port != 53) {
-                dnsServerFields += QStringLiteral("\n                \"server_port\": %1,").arg(port);
+                dnsServerFields += QStringLiteral(R"(,
+                "server_port": %1)").arg(port);
             }
         }
 

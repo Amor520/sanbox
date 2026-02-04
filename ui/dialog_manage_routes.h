@@ -28,6 +28,22 @@ private:
         QString custom_route_global;
     } CACHE;
 
+    struct SimpleRouteSnapshot {
+        QString direct_ip;
+        QString direct_domain;
+        QString proxy_ip;
+        QString proxy_domain;
+        QString block_ip;
+        QString block_domain;
+        QString def_outbound;
+        QString custom;
+    };
+
+    // "User 1" acts like a draft slot so switching presets won't wipe user edits.
+    SimpleRouteSnapshot user1_snapshot;
+    bool user1_snapshot_valid = false;
+    bool preset_is_user1 = true;
+
     QMenu *builtInSchemesMenu;
     Qv2ray::ui::widgets::AutoCompleteTextEdit *directDomainTxt;
     Qv2ray::ui::widgets::AutoCompleteTextEdit *proxyDomainTxt;
@@ -42,6 +58,14 @@ private:
     //
     QString title_base;
     QString active_routing;
+
+    void SaveSimpleRouteSnapshot(SimpleRouteSnapshot *out) const;
+
+    void LoadSimpleRouteSnapshot(const SimpleRouteSnapshot &in);
+
+    void LoadUser1DraftFromDataStore();
+
+    void PersistUser1DraftToDataStore(bool saveNow);
 
 public slots:
 

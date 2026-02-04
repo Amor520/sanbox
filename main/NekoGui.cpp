@@ -259,6 +259,7 @@ namespace NekoGui {
         _add(new configItem("hk_spmenu", &hotkey_system_proxy_menu, itemType::string));
         _add(new configItem("fakedns", &fake_dns, itemType::boolean));
         _add(new configItem("active_routing", &active_routing, itemType::string));
+        _add(new configItem("routing_user1_draft", &routing_user1_draft, itemType::string));
         _add(new configItem("mw_size", &mw_size, itemType::string));
         _add(new configItem("conn_stat", &connection_statistics, itemType::boolean));
         _add(new configItem("vpn_impl", &vpn_implementation, itemType::integer));
@@ -274,6 +275,15 @@ namespace NekoGui {
         _add(new configItem("sub_clear", &sub_clear, itemType::boolean));
         _add(new configItem("sub_insecure", &sub_insecure, itemType::boolean));
         _add(new configItem("sub_auto_update", &sub_auto_update, itemType::integer));
+        // Sync (WebDAV)
+        _add(new configItem("sync_webdav_url", &sync_webdav_url, itemType::string));
+        _add(new configItem("sync_webdav_username", &sync_webdav_username, itemType::string));
+        _add(new configItem("sync_webdav_password", &sync_webdav_password, itemType::string));
+        _add(new configItem("sync_password", &sync_password, itemType::string));
+        _add(new configItem("sync_auto_on_sub_update", &sync_auto_on_sub_update, itemType::boolean));
+        _add(new configItem("sync_last_local_hash", &sync_last_local_hash, itemType::string));
+        _add(new configItem("sync_last_remote_etag", &sync_last_remote_etag, itemType::string));
+        _add(new configItem("sync_last_time", &sync_last_time, itemType::integer64));
         _add(new configItem("log_ignore", &log_ignore, itemType::stringList));
         _add(new configItem("start_minimal", &start_minimal, itemType::boolean));
         _add(new configItem("max_log_line", &max_log_line, itemType::integer));
@@ -434,6 +444,13 @@ namespace NekoGui {
 
     QString FindNekoBoxCoreRealPath() {
         auto fn = QApplication::applicationDirPath() + "/nekobox_core";
+        auto fi = QFileInfo(fn);
+        if (fi.isSymLink()) return fi.symLinkTarget();
+        return fn;
+    }
+
+    QString FindNekoBoxSyncRealPath() {
+        auto fn = QApplication::applicationDirPath() + "/nekobox_sync";
         auto fi = QFileInfo(fn);
         if (fi.isSymLink()) return fi.symLinkTarget();
         return fn;
